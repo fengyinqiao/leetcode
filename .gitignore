@@ -1,0 +1,6 @@
+.idea/
+leetcode.iml
+out/
+src/com/fengyq/leetcode/editor/cn/doc/
+src/com/fengyq/leetcode/editor/cn/all.json
+src/com/fengyq/leetcode/editor/cn/translation.json
