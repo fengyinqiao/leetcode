@@ -19,42 +19,87 @@
 
 
 package com.fengyq.leetcode.editor.cn;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 //java:最长上升子序列
-public class LC300LongestIncreasingSubsequence{
+public class LC300LongestIncreasingSubsequence {
     public static void main(String[] args) {
-         Solution solution = new LC300LongestIncreasingSubsequence().new Solution();
-        int[] nums={10,9,2,5,3,7,101,18};
+        Solution solution = new LC300LongestIncreasingSubsequence().new Solution();
+        int[] nums = {10, 9, 2, 5, 3, 7, 101, 18};
         System.out.println(solution.lengthOfLIS(nums));
     }
+
     //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int lengthOfLIS(int[] nums) {
-        if(nums==null||nums.length==0) {
-            return 0;
-        }
+    class Solution {
+        public int lengthOfLIS(int[] nums) {
+            /*
+            //递归解法
+            this.memo=new int[nums.length];
+            Arrays.fill(memo,Integer.MIN_VALUE);
 
-        int[] f=new int[nums.length];
-        int max=1;
-        for (int i = 0; i < nums.length; i++) {
-            f[i]=maxLen(nums,f,i)+1;
-        }
-
-        for (int i = 0; i < f.length; i++) {
-            if(f[i]>max) {
-                max=f[i];
+            int res = Integer.MIN_VALUE;
+            for (int i = 0; i < nums.length; i++) {
+                res = Math.max(res, dp(nums, i));
             }
-        }
-        return max;
-    }
+            return res;
+            */
 
-        private int maxLen(int[] nums,int[] f,int i) {
-            int max=0;
+            //迭代解法
+            return dpIteration(nums);
+        }
+
+        int dpIteration(int[] nums) {
+            int[] dp = new int[nums.length];
+            //base case
+            Arrays.fill(dp,1);
+
+            int res = dp[0];
+
+            //遍历状态
+            for (int i = 1; i < dp.length; i++) {
+                //做选择，求最值，更新状态
+                for (int j = 0; j < i; j++) {
+                    if (nums[j] < nums[i]) {
+                        dp[i] = Math.max(dp[j] + 1, dp[i]);
+                    }
+                }
+                res=Math.max(res,dp[i]);
+            }
+
+            return res;
+        }
+
+        int[] memo;
+
+        int dp(int[] nums, int i) {
+            //base case
+            if (nums.length == 0) {
+                return 0;
+            }
+            if (i == 0) {
+                return 1;
+            }
+
+            if (memo[i] != Integer.MIN_VALUE) {
+                return memo[i];
+            }
+
+            //做选择，求最值，更新状态
+            int res = Integer.MIN_VALUE;
             for (int j = 0; j < i; j++) {
-                if(f[j]>max && nums[j]<nums[i]) {
-                    max=f[j];
+                if (nums[j] < nums[i]) {
+                    res = Math.max(res, dp(nums, j) + 1);
                 }
             }
-            return max;
+
+            if (res == Integer.MIN_VALUE) {
+                memo[i] = 1;
+                return memo[i];
+            }
+            memo[i] = res;
+            return memo[i];
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)

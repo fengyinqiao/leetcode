@@ -53,14 +53,20 @@ public class LC83RemoveDuplicatesFromSortedList {
     //1,1,2
     class Solution {
         public ListNode deleteDuplicates(ListNode head) {
-            ListNode dummy = new ListNode(0, head);
-            ListNode curr = dummy;
-            while (curr.next != null && curr.next.next != null) {
-                while (curr.next.next != null && curr.next.val == curr.next.next.val) {
-                    curr.next = curr.next.next;
-                }
-                curr = curr.next;
+            if (head == null) {
+                return null;
             }
+            ListNode dummy = new ListNode(-1, head), slow = head, fast = head;
+            while (fast != null) {
+                if (slow.val != fast.val) {
+                    slow.next = fast;
+                    slow = slow.next;
+                }
+
+                fast = fast.next;
+            }
+            slow.next = null;
+
             return dummy.next;
         }
     }

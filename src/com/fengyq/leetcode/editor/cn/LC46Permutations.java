@@ -1,75 +1,78 @@
-//给定一个 没有重复 数字的序列，返回其所有可能的全排列。 
+//给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。 
 //
-// 示例: 
+// 
 //
-// 输入: [1,2,3]
-//输出:
-//[
-//  [1,2,3],
-//  [1,3,2],
-//  [2,1,3],
-//  [2,3,1],
-//  [3,1,2],
-//  [3,2,1]
-//] 
-// Related Topics 回溯算法 
-// 👍 1287 👎 0
+// 示例 1： 
+//
+// 
+//输入：nums = [1,2,3]
+//输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+// 
+//
+// 示例 2： 
+//
+// 
+//输入：nums = [0,1]
+//输出：[[0,1],[1,0]]
+// 
+//
+// 示例 3： 
+//
+// 
+//输入：nums = [1]
+//输出：[[1]]
+// 
+//
+// 
+//
+// 提示： 
+//
+// 
+// 1 <= nums.length <= 6 
+// -10 <= nums[i] <= 10 
+// nums 中的所有整数 互不相同 
+// 
+//
+// Related Topics 数组 回溯 👍 2742 👎 0
 
 
 package com.fengyq.leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
-//java:全排列
 public class LC46Permutations {
     public static void main(String[] args) {
         Solution solution = new LC46Permutations().new Solution();
-        System.out.println(solution.permute(new int[]{1, 2, 3}).size());
-        System.out.println(solution.permute(new int[]{1, 2, 3}));
+        System.out.println(solution.permute(new int[]{0, 1, 2}));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
-        boolean[] visible;
-        List<List<Integer>> res;
+        List<List<Integer>> res = new LinkedList<>();
+        LinkedList<Integer> track = new LinkedList<>();
 
         public List<List<Integer>> permute(int[] nums) {
-            res = new ArrayList<>();
-            if (nums == null) {
-                return res;
-            }
-            visible = new boolean[nums.length];
-            Arrays.fill(visible, true);
-
-            for (int i = 0; i < nums.length; i++) {
-                List<Integer> list = new ArrayList<>();
-                backtracking(nums, i, list);
-            }
+            backTrack(nums, track);
             return res;
         }
 
-        void backtracking(int[] nums, int idx, List<Integer> list) {
-            if (!visible[idx]) {
+        void backTrack(int[] nums, LinkedList<Integer> track) {
+            if (track.size() == nums.length) {
+                res.add(new LinkedList<>(track));
                 return;
             }
-
-            visible[idx] = false;
-            list.add(nums[idx]);
-            if (list.size() == nums.length) {
-                res.add(new ArrayList<>(list));
-                list.remove(list.size() - 1);
-                visible[idx] = true;
-                return;
-            }
-
             for (int i = 0; i < nums.length; i++) {
-                backtracking(nums, i, list);
+                int num = nums[i];
+                if (track.contains(num)) {
+                    continue;
+                }
+                track.add(num);
+                backTrack(nums, track);
+                track.removeLast();
             }
-            list.remove(list.size() - 1);
-            visible[idx] = true;
         }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 

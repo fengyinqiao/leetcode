@@ -19,30 +19,68 @@ package com.fengyq.leetcode.editor.cn;
 import java.util.Arrays;
 
 //java:最大子序和
-public class LC53MaximumSubarray{
+public class LC53MaximumSubarray {
     public static void main(String[] args) {
-         Solution solution = new LC53MaximumSubarray().new Solution();
-         int[] nums={-2,1,-3,4,-1,2,1,-5,4};
-         System.out.println(solution.maxSubArray(nums));
+        Solution solution = new LC53MaximumSubarray().new Solution();
+        int[] nums = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+        System.out.println(solution.maxSubArray(nums));
     }
+
     //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int maxSubArray(int[] nums) {
-        int[] f=new int[nums.length];
-        for (int i = 0; i < nums.length; i++) {
-            int num = nums[i];
-            if(i==0) {
-                f[i]= num;
-            }else {
-                f[i]= Math.max(num,f[i-1]+num);
+    class Solution {
+        public int maxSubArray(int[] nums) {
+            /* 递归解法
+            this.memo = new int[nums.length];
+            Arrays.fill(memo, Integer.MIN_VALUE);
+
+            int res = Integer.MIN_VALUE;
+            for (int i = 0; i < nums.length; i++) {
+                res = Math.max(res, dp(nums, i));
             }
+            return res;
+            */
+
+            // 迭代解法
+            return dpIteration(nums);
         }
 
-        Arrays.sort(f);
+        int[] memo;
 
-        return f[f.length-1];
+        int dp(int[] nums, int i) {
+            //base case
+            if (nums.length == 0) {
+                return 0;
+            }
+            if (i == 0) {
+                return nums[0];
+            }
+
+            if (memo[i] != Integer.MIN_VALUE) {
+                return memo[i];
+            }
+
+            //做选择，求最值，更新状态（递归解法不需要在for循环中遍历状态并更新，因为递归是自顶向下的，递归的过程就是在遍历状态）
+            memo[i] = Math.max(dp(nums, i - 1) + nums[i], nums[i]);
+            return memo[i];
+        }
+
+        int dpIteration(int[] nums) {
+            int[] dp = new int[nums.length];
+            //base case
+            dp[0] = nums[0];
+            //遍历状态
+            for (int i = 1; i < dp.length; i++) {
+                //做选择，求最值，更新状态
+                dp[i] = Math.max(dp[i-1] + nums[i] ,nums[i]);
+            }
+
+            int res = Integer.MIN_VALUE;
+            for (int i = 0; i < dp.length; i++) {
+                res=Math.max(res,dp[i]);
+            }
+            return res;
+        }
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
