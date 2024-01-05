@@ -36,19 +36,66 @@
 //
 // Related Topics 数组 二分查找 矩阵 👍 874 👎 0
 
-  
+
 package com.fengyq.leetcode.editor.cn;
-public class LC74SearchA2dMatrix{
+
+public class LC74SearchA2dMatrix {
     public static void main(String[] args) {
-         Solution solution = new LC74SearchA2dMatrix().new Solution();
+        Solution solution = new LC74SearchA2dMatrix().new Solution();
     }
-    
+
     //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public boolean searchMatrix(int[][] matrix, int target) {
-        return false;
+    class Solution {
+        public boolean searchMatrix(int[][] matrix, int target) {
+            int row = searchRow(matrix,target);
+            if(row == -1) {
+                return false;
+            }
+
+            if(matrix[row][0] == target) {
+                return true;
+            }
+
+            int col = binarySearch(matrix[row],target);
+            if(col != -1) {
+                return true;
+            }
+            return false;
+        }
+
+        int searchRow(int[][] matrix, int target) {
+            int left = 0, right = matrix.length - 1;
+            while (left <= right) {
+                int mid = (left + right) / 2;
+                if (target == matrix[mid][0]) {
+                    return mid;
+                } else if (target < matrix[mid][0]) {
+                    right = mid - 1;
+                } else if (target > matrix[mid][0]) {
+                    left = mid + 1;
+                }
+            }
+            if(right < 0) {
+                return -1;
+            }
+            return right;
+        }
+
+        int binarySearch(int[] nums, int target) {
+            int left = 0, right = nums.length - 1;
+            while (left <= right) {
+                int mid = (left + right) / 2;
+                if (target == nums[mid]) {
+                    return mid;
+                } else if (target < nums[mid]) {
+                    right = mid - 1;
+                } else if (target > nums[mid]) {
+                    left = mid + 1;
+                }
+            }
+            return -1;
+        }
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
