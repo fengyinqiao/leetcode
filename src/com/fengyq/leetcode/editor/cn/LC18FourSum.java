@@ -47,9 +47,9 @@ import java.util.List;
 public class LC18FourSum {
     public static void main(String[] args) {
         Solution solution = new LC18FourSum().new Solution();
-        int[] nums={1,0,-1,0,-2,2};
+        int[] nums = {1, 0, -1, 0, -2, 2};
         Arrays.sort(nums);
-        System.out.println(solution.nSum(nums,0,4,0));
+        System.out.println(solution.nSum(nums, 0, 4, 0));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -57,7 +57,7 @@ public class LC18FourSum {
 
         public List<List<Integer>> fourSum(int[] nums, int target) {
             Arrays.sort(nums);
-            return nSum(nums,target,4,0);
+            return nSum(nums, target, 4, 0);
         }
 
         //0,1,2
@@ -66,22 +66,22 @@ public class LC18FourSum {
             if (n < 2 || nums.length == 0) {
                 return res;
             }
-            if (n == 2) {
+            if (n == 2) {//base case
                 int left = start, right = nums.length - 1;
                 while (left < right) {
                     int leftEle = nums[left];
                     int rightEle = nums[right];
                     if (leftEle + rightEle < target) {
-                        while (left<right && nums[left] == leftEle) {
+                        while (left < right && nums[left] == leftEle) {
                             left++;
                         }
                     } else if (leftEle + rightEle > target) {
-                        while (left<right && nums[right] == rightEle) {
+                        while (left < right && nums[right] == rightEle) {
                             right--;
                         }
                     } else {
                         res.add(new LinkedList<>(Arrays.asList(leftEle, rightEle)));
-                        while (left<right && nums[left] == leftEle) {
+                        while (left < right && nums[left] == leftEle) {
                             left++;
                         }
                     }
@@ -89,9 +89,9 @@ public class LC18FourSum {
                 return res;
             }
 
-            for (int left = start;left < nums.length;) {
+            for (int left = start; left < nums.length; ) {
                 int leftEle = nums[left];
-                List<List<Integer>> preRes = nSum(nums, target - nums[left], n - 1, left + 1);
+                List<List<Integer>> preRes = nSum(nums, target - nums[left], n - 1, left + 1);//递归
                 for (List<Integer> preRe : preRes) {
                     preRe.add(nums[left]);
                     res.add(new LinkedList<>(preRe));
